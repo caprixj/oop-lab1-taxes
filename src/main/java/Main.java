@@ -1,56 +1,39 @@
-import model.exemption.Exemption;
+import model.benefit.Benefit;
+import model.benefit.BenefitType;
 import model.income.Income;
+import model.income.IncomeType;
+import database.repository.IncomeRepository;
+import model.tax.Tax;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final IncomeRepository incomeRepository = new IncomeRepository();
+    private static final List<Benefit> appliedBenefits = new ArrayList<>();
+
     public static void main(String[] args) {
-        System.out.println("--- Taxes Calculator ---");
+        System.out.println("----- Taxes Calculator -----");
         System.out.println();
 
-        Income tempIncome = new Income();
-        Exemption tempExemption = new Exemption();
-
         int opt = 1;
-        Scanner scanner = new Scanner(System.in);
 
         while (opt != 0) {
-            System.out.println(
-                "1 - create income\n" +
-                "2 - create exemption\n" +
-                "3 - show all income records\n" +
-                "4 - show all exemptions\n" +
-                "5 - delete all income records\n" +
-                "6 - delete all exemptions\n" +
-                "7 - sort taxes by sum\n" +
-                "0 - exit program"
-            );
-
-            System.out.print("\nenter option: ");
+            showMenu();
             opt = scanner.nextInt();
 
             switch (opt) {
-                case 1 -> {
-                    //
-                }
-                case 2 -> {
-                    //
-                }
-                case 3 -> {
-                    //
-                }
-                case 4 -> {
-                    //
-                }
-                case 5 -> {
-                    //
-                }
-                case 6 -> {
-                    //
-                }
+                case 1 -> addIncome();
+                case 2 -> applyBenefit();
+                case 3 -> showAllIncomes();
+                case 4 -> showAllBenefits();
+                case 5 -> removeAllIncomes();
+                case 6 -> removeAllBenefits();
                 case 7 -> {
-                    //
+                    List<Tax> sortedTaxes = getAllTaxesSortedBySum();
                 }
                 case 0 -> {
                     break;
@@ -58,5 +41,80 @@ public class Main {
                 default -> System.out.println("\n\ninvalid option!");
             }
         }
+    }
+
+    private static void showMenu() {
+        System.out.println(
+            "1 - add income\n" +
+                "2 - apply benefit\n" +
+                "3 - show all income records\n" +
+                "4 - show all benefits\n" +
+                "5 - remove all income records\n" +
+                "6 - remove all benefits\n" +
+                "7 - sort taxes by sum\n" +
+                "0 - exit program"
+        );
+
+        System.out.print("\nenter option: ");
+    }
+
+    private static void addIncome() {
+        Income income = new Income();
+
+        System.out.println("\n--- income record creation ---");
+        System.out.println("\navailable income types:\n" +
+            "- MainJob\n" +
+            "- SecondaryJob\n" +
+            "- Royalty\n" +
+            "- PropertySale\n" +
+            "- Gift\n" +
+            "- InternationalTransfer\n" +
+            "- LotteryAward\n" +
+            "- MaterialAid"
+        );
+        System.out.print("\nenter income type: ");
+        income.setType(IncomeType.valueOf(scanner.next()));
+
+        System.out.print("\nenter sum: ");
+        income.setSum(scanner.nextDouble());
+
+        incomeRepository.addRecord(income);
+        System.out.println("new income has been added: " + income);
+    }
+
+    private static void applyBenefit() {
+        Benefit benefit;
+
+        System.out.println("\n--- benefit record creation ---");
+        System.out.println("\navailable benefit types:\n" +
+            "- Child\n" +
+            "- Veteran\n" +
+            "- Disability"
+        );
+        System.out.print("\nenter benefit type: ");
+        benefit = new Benefit(BenefitType.valueOf(scanner.next()));
+
+        appliedBenefits.add(benefit);
+        System.out.println("new benefit has been added: " + benefit);
+    }
+
+    private static void showAllIncomes() {
+
+    }
+
+    private static void showAllBenefits() {
+
+    }
+
+    private static void removeAllIncomes() {
+
+    }
+
+    private static void removeAllBenefits() {
+
+    }
+
+    private static List<Tax> getAllTaxesSortedBySum() {
+        //
     }
 }
