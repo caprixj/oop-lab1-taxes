@@ -2,8 +2,7 @@ import model.benefit.Benefit;
 import model.benefit.BenefitType;
 import model.income.Income;
 import model.income.IncomeType;
-import database.repository.IncomeRepository;
-import model.tax.Tax;
+import database.IncomeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,27 +31,27 @@ public class Main {
                 case 4 -> showAllBenefits();
                 case 5 -> removeAllIncomes();
                 case 6 -> removeAllBenefits();
-                case 7 -> {
-                    List<Tax> sortedTaxes = getAllTaxesSortedBySum();
-                }
+                case 7 -> sortTaxesBySum();
                 case 0 -> {
                     break;
                 }
                 default -> System.out.println("\n\ninvalid option!");
             }
         }
+
+        incomeRepository.close();
     }
 
     private static void showMenu() {
         System.out.println(
             "1 - add income\n" +
-                "2 - apply benefit\n" +
-                "3 - show all income records\n" +
-                "4 - show all benefits\n" +
-                "5 - remove all income records\n" +
-                "6 - remove all benefits\n" +
-                "7 - sort taxes by sum\n" +
-                "0 - exit program"
+            "2 - apply benefit\n" +
+            "3 - show all income records\n" +
+            "4 - show all benefits\n" +
+            "5 - remove all income records\n" +
+            "6 - remove all benefits\n" +
+            "7 - sort taxes by sum\n" +
+            "0 - exit program"
         );
 
         System.out.print("\nenter option: ");
@@ -79,7 +78,7 @@ public class Main {
         income.setSum(scanner.nextDouble());
 
         incomeRepository.addRecord(income);
-        System.out.println("new income has been added: " + income);
+        System.out.println("\nnew income has been added: " + income);
     }
 
     private static void applyBenefit() {
@@ -95,26 +94,29 @@ public class Main {
         benefit = new Benefit(BenefitType.valueOf(scanner.next()));
 
         appliedBenefits.add(benefit);
-        System.out.println("new benefit has been added: " + benefit);
+        System.out.println("\nnew benefit has been added: " + benefit);
     }
 
     private static void showAllIncomes() {
-
+        System.out.println(incomeRepository.getAllIncomes());
     }
 
     private static void showAllBenefits() {
-
+        for (Benefit benefit : appliedBenefits) {
+            System.out.println(benefit);
+        }
     }
 
     private static void removeAllIncomes() {
-
+        incomeRepository.removeAllIncomes();
     }
 
     private static void removeAllBenefits() {
-
+        appliedBenefits.clear();
+        System.out.println("\nthe benefits have been removed");
     }
 
-    private static List<Tax> getAllTaxesSortedBySum() {
-        //
+    private static void sortTaxesBySum() {
+        System.out.println(incomeRepository.getSortedBySum());
     }
 }

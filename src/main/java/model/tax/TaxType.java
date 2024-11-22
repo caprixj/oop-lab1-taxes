@@ -6,5 +6,5 @@ public enum TaxType {
     Royalty,
     PropertySale,
     Gift,
-    InternationalTransfers
+    InternationalTransfer
 }
